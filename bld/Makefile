@@ -36,7 +36,7 @@
 ## module swap PrgEnv-intel PrgEnv-cray
 ## module load cray-netcdf cray-hdf5
 ## Then, from the bld folder run:
-## make OPTS=D MPI=Y NETCDF4=Y NETCDF_ROOT=${NETCDF_DIR} NETCDFF=Y
+## make OPTS=D MPI=Y NETCDF_ROOT=${NETCDF_DIR}
 
 MY_BIN_DIR := ../bin
 MY_BLD_DIR := ../bld
@@ -128,7 +128,7 @@ ifneq (${null},$(findstring CRAY,${PVM_ARCH}))
  CCM_TRG_FLG := CRAY
 endif
 ifneq (${null},$(findstring LINUX,${PVM_ARCH}))
- CCM_TRG_FLG := SUN
+ CCM_TRG_FLG := LINUX
 endif
 ifneq (${null},$(findstring MACOSX,${PVM_ARCH}))
  CCM_TRG_FLG := SUN
@@ -241,7 +241,7 @@ ifndef LINUX_FC
  #LINUX_FC := ifort
  #LINUX_FC := pathf95
  #LINUX_FC := pgf95
- LINUX_FC := ftn -N 132 
+ LINUX_FC := ftn -N 132 -lmpich
 endif # endif LINUX_FC
 endif # endif LINUX
 
