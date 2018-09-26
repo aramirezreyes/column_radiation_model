@@ -31,6 +31,13 @@
 # 64-bit ABI netCDF4 on NCAR AIX systems (bluefire):
 # cd ~/sw/crm/bld;CURL_LIB='/contrib/curl/lib' HDF5_ROOT='/contrib/hdf5-1.8.4-patch1_sequential' NETCDF_ROOT='/contrib/netcdf-4.1.1_sequential' SZ_LIB='/contrib/szip/lib' make SZ=Y all;cd -
 
+## For NERSC-CORI:
+## First change the cray compiling environment from intel to cray
+## module swap PrgEnv-intel PrgEnv-cray
+## module load cray-netcdf cray-hdf5
+## Then, from the bld folder run:
+## make OPTS=D MPI=Y NETCDF4=Y NETCDF_ROOT=${NETCDF_DIR} NETCDFF=Y
+
 MY_BIN_DIR := ../bin
 MY_BLD_DIR := ../bld
 MY_DAT_DIR := ../data
@@ -207,16 +214,18 @@ ifneq (${null},$(findstring ${PVM_ARCH},LINUXALPHALINUXAMD64LINUXARMFREEBSDMACOS
 # Decide among the plethora of Linux compilers
 ifndef LINUX_CXX
 # C++ compiler for Linux
- LINUX_CXX := g++
+# LINUX_CXX := g++
  #LINUX_CXX := como
  #LINUX_CXX := icc
  #LINUX_CXX := insure
  #LINUX_CXX := pathCC
  #LINUX_CXX := pgCC
+ LINUX_CXX := CC
 endif # endif LINUX_CXX
 ifndef LINUX_CC
 # C compiler for Linux
- LINUX_CC := gcc -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE
+# LINUX_CC := gcc -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE
+ LINUX_CC := cc -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE #CORI
  #LINUX_CC := como --c99
  #LINUX_CC := icc -std=c99 -D_BSD_SOURCE -D_POSIX_SOURCE
  #LINUX_CC := insure
@@ -226,12 +235,13 @@ endif # endif LINUX_CC
 ifndef LINUX_FC
 # Fortran compiler for Linux
  #LINUX_FC := g95
- LINUX_FC := gfortran
+# LINUX_FC := gfortran
  #LINUX_FC := gfortran -std=f95
  #LINUX_FC := lf95
  #LINUX_FC := ifort
  #LINUX_FC := pathf95
  #LINUX_FC := pgf95
+ LINUX_FC := ftn
 endif # endif LINUX_FC
 endif # endif LINUX
 
