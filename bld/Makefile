@@ -241,7 +241,7 @@ ifndef LINUX_FC
  #LINUX_FC := ifort
  #LINUX_FC := pathf95
  #LINUX_FC := pgf95
- LINUX_FC := ftn
+ LINUX_FC := ftn -e -r8 -i4
 endif # endif LINUX_FC
 endif # endif LINUX
 
