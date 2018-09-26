@@ -1,4 +1,3 @@
-# $Id$ -*-makefile-*-
 
 # Purpose: Makefile for CRM
 # Allow for precedence of user-modified files, different search paths
@@ -12,31 +11,11 @@
 # 19990907: GNU make 3.77 has a bug in wildcard function on Solaris
 # Solution: Use a different version of GNU make on that platform
 
-# Usage: 
-# make dir;make
-# Unset environment variables before compiling:
-# unset MY_BIN_DIR MY_INC_DIR MY_OBJ_DIR MY_LIB_DIR;make
 
-# Quickie test copies:
-# scp dust.ess.uci.edu:crm/bld/Makefile ~/sw/crm/bld/Makefile 
-# scp givre.ess.uci.edu:crm/bld/Makefile ~/sw/crm/bld/Makefile 
-
-# Usage:
-# make
-# cd ~/sw/crm/bld;make OPTS=D NETCDF4=Y;cd - # netCDF4
-# cd ~/sw/crm/bld;make OPTS=D MPI=Y NETCDF4=Y;cd - # greenplanet
-# cd ~/sw/crm/bld;NETCDF_ROOT='/usr' NETCDF_INC='/usr/include' NETCDF_LIB='/usr/lib' make OPTS=D NETCDF4=N NETCDFF=Y; cd - # netCDF3 from /usr
-# 32-bit ABI on NCAR AIX systems:
-# cd ~/sw/crm/bld;NETCDF_LIB=/usr/local/lib32/r4i4 make lib_cln cln all ABI=32;cd -
-# 64-bit ABI netCDF4 on NCAR AIX systems (bluefire):
-# cd ~/sw/crm/bld;CURL_LIB='/contrib/curl/lib' HDF5_ROOT='/contrib/hdf5-1.8.4-patch1_sequential' NETCDF_ROOT='/contrib/netcdf-4.1.1_sequential' SZ_LIB='/contrib/szip/lib' make SZ=Y all;cd -
-
-## For NERSC-CORI:
-## First change the cray compiling environment from intel to cray
-## module swap PrgEnv-intel PrgEnv-cray
-## module load cray-netcdf cray-hdf5
-## Then, from the bld folder run:
-## make OPTS=D MPI=Y NETCDF_ROOT=${NETCDF_DIR}
+# For NERSC-CORI:
+# module load cray-netcdf cray-hdf5
+# Then, from the bld folder run:
+# make MPI=Y NETCDF_ROOT=${NETCDF_DIR}
 
 MY_BIN_DIR := ../bin
 MY_BLD_DIR := ../bld
@@ -128,7 +107,7 @@ ifneq (${null},$(findstring CRAY,${PVM_ARCH}))
  CCM_TRG_FLG := CRAY
 endif
 ifneq (${null},$(findstring LINUX,${PVM_ARCH}))
- CCM_TRG_FLG := LINUX
+ CCM_TRG_FLG := SUN
 endif
 ifneq (${null},$(findstring MACOSX,${PVM_ARCH}))
  CCM_TRG_FLG := SUN
@@ -220,12 +199,12 @@ ifndef LINUX_CXX
  #LINUX_CXX := insure
  #LINUX_CXX := pathCC
  #LINUX_CXX := pgCC
- LINUX_CXX := CC -wall -qopenmp #CORI
+ LINUX_CXX := CC -qopenmp #CORI
 endif # endif LINUX_CXX
 ifndef LINUX_CC
 # C compiler for Linux
 # LINUX_CC := gcc -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE
- LINUX_CC := cc -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE -Wall -qopenmp #CORI
+ LINUX_CC := cc -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE -qopenmp #CORI
  #LINUX_CC := como --c99
  #LINUX_CC := icc -std=c99 -D_BSD_SOURCE -D_POSIX_SOURCE
  #LINUX_CC := insure
@@ -241,7 +220,7 @@ ifndef LINUX_FC
  #LINUX_FC := ifort
  #LINUX_FC := pathf95
  #LINUX_FC := pgf95
- LINUX_FC := ftn -132 -Wall -qopenmp
+ LINUX_FC := ftn -132 -qopenmp -r8 -i4 #CORI
 endif # endif LINUX_FC
 endif # endif LINUX
 
