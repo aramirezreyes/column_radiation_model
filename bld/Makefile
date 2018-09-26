@@ -220,12 +220,12 @@ ifndef LINUX_CXX
  #LINUX_CXX := insure
  #LINUX_CXX := pathCC
  #LINUX_CXX := pgCC
- LINUX_CXX := CC -wall
+ LINUX_CXX := CC -wall -qopenmp #CORI
 endif # endif LINUX_CXX
 ifndef LINUX_CC
 # C compiler for Linux
 # LINUX_CC := gcc -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE
- LINUX_CC := cc -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE -wall #CORI
+ LINUX_CC := cc -std=c99 -pedantic -D_BSD_SOURCE -D_POSIX_SOURCE -Wall -qopenmp #CORI
  #LINUX_CC := como --c99
  #LINUX_CC := icc -std=c99 -D_BSD_SOURCE -D_POSIX_SOURCE
  #LINUX_CC := insure
@@ -241,7 +241,7 @@ ifndef LINUX_FC
  #LINUX_FC := ifort
  #LINUX_FC := pathf95
  #LINUX_FC := pgf95
- LINUX_FC := ftn -132 -wall
+ LINUX_FC := ftn -132 -Wall -qopenmp
 endif # endif LINUX_FC
 endif # endif LINUX
 
